@@ -1,18 +1,273 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Formulario Básico</title>
+    <meta charset="UTF-8">
+    <title>Formulario BNE Estilo</title>
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: 'Open Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 4px rgba(25, 118, 210, 0.2);
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #1976d2;
+            border: 1px solid #1976d2;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        .btn-primary {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1565c0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Formulario de contacto</h1>
-    <form th:action="@{/enviar}" method="post">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <button type="submit">Enviar</button>
+    <form th:action="@{/api/datos}" method="post" class="main-container">
+        <div style="text-align:right; color:#1976d2; font-weight:bold; margin-bottom:10px;">
+            Usuario logueado: <span th:text="${session.usuario}"></span>
+        </div>
+        
+        <!-- Datos Personales -->
+        <div class="section">
+            <h1>Datos Personales</h1>
+            <div class="form-grid">
+                <div>
+                    <label for="nombres">Nombres</label>
+                    <input type="text" id="nombres" name="nombres" placeholder="Ej: Juan Pedro" required>
+                </div>
+                <div>
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" id="apellidos" name="apellidos" placeholder="Ej: González López" required>
+                </div>
+                <div>
+                    <label for="rut">RUT</label>
+                    <input type="text" id="rut" name="rut" placeholder="Ej: 12.345.678-9" required>
+                </div>
+                <div>
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+                <div>
+                    <label for="sexo">Sexo</label>
+                    <select id="sexo" name="sexo" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="nacionalidad">Nacionalidad</label>
+                    <input type="text" id="nacionalidad" name="nacionalidad" placeholder="Ej: Chilena" required>
+                </div>
+                <div>
+                    <label for="estado_civil">Estado Civil</label>
+                    <select id="estado_civil" name="estado_civil" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Soltero">Soltero</option>
+                        <option value="Casado">Casado</option>
+                        <option value="Divorciado">Divorciado</option>
+                        <option value="Viudo">Viudo</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" name="telefono" placeholder="Ej: +56 9 1234 5678" required>
+                </div>
+                <div>
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div>
+                    <label for="direccion">Dirección</label>
+                    <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 742" required>
+                </div>
+                <div>
+                    <label for="discapacidad">¿Posee alguna discapacidad?</label>
+                    <select id="discapacidad" name="discapacidad" required>
+                        <option value="">Seleccione...</option>
+                        <option value="No">No</option>
+                        <option value="Sí">Sí</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Antecedentes Laborales -->
+        <div class="section">
+            <h1>Antecedentes Laborales</h1>
+            <div class="form-grid">
+                <div>
+                    <label for="empresa">Empresa donde trabajó</label>
+                    <input type="text" id="empresa" name="empresa" placeholder="Ej: Empresa ABC" required>
+                </div>
+                <div>
+                    <label for="cargo">Cargo desempeñado</label>
+                    <input type="text" id="cargo" name="cargo" placeholder="Ej: Analista" required>
+                </div>
+                <div>
+                    <label for="rubro">Rubro o industria</label>
+                    <input type="text" id="rubro" name="rubro" placeholder="Ej: Tecnología, Retail" required>
+                </div>
+                <div>
+                    <label for="fecha_inicio">Fecha de inicio</label>
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" required>
+                </div>
+                <div>
+                    <label for="fecha_fin">Fecha de término</label>
+                    <input type="date" id="fecha_fin" name="fecha_fin">
+                </div>
+                <div>
+                    <label for="tipo_contrato">Tipo de contrato</label>
+                    <select id="tipo_contrato" name="tipo_contrato" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Plazo fijo">Plazo fijo</option>
+                        <option value="Indefinido">Indefinido</option>
+                        <option value="Honorarios">Honorarios</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sueldo">Sueldo aproximado</label>
+                    <input type="text" id="sueldo" name="sueldo" placeholder="Ej: $800.000" required>
+                </div>
+                <div>
+                    <label for="motivo">Motivo de término</label>
+                    <input type="text" id="motivo" name="motivo" placeholder="Ej: Fin de contrato" required>
+                </div>
+                <div style="grid-column: span 2;">
+                    <label for="descripcion">Descripción del trabajo realizado</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Describa las funciones realizadas..." required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información de Estudios -->
+        <div class="section">
+            <h1>Información de Estudios</h1>
+            <div class="form-grid">
+                <div>
+                    <label for="nivel_educativo">Nivel educativo</label>
+                    <select id="nivel_educativo" name="nivel_educativo" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Educación básica">Educación básica</option>
+                        <option value="Educación media">Educación media</option>
+                        <option value="Técnico">Técnico</option>
+                        <option value="Universitario">Universitario</option>
+                        <option value="Postgrado">Postgrado</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="institucion">Nombre de la institución</label>
+                    <input type="text" id="institucion" name="institucion" placeholder="Ej: Universidad de Chile" required>
+                </div>
+                <div>
+                    <label for="carrera">Título o carrera</label>
+                    <input type="text" id="carrera" name="carrera" placeholder="Ej: Ingeniería Comercial" required>
+                </div>
+                <div>
+                    <label for="anio_inicio">Año de inicio</label>
+                    <input type="number" id="anio_inicio" name="anio_inicio" placeholder="Ej: 2015" required>
+                </div>
+                <div>
+                    <label for="anio_fin">Año de término</label>
+                    <input type="number" id="anio_fin" name="anio_fin" placeholder="Ej: 2020">
+                </div>
+                <div>
+                    <label for="estado_estudio">Estado</label>
+                    <select id="estado_estudio" name="estado_estudio" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Completo">Completo</option>
+                        <option value="Incompleto">Incompleto</option>
+                        <option value="En curso">En curso</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="btn-container">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Volver</button>
+            <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+        </div>
     </form>
 </body>
 </html>
