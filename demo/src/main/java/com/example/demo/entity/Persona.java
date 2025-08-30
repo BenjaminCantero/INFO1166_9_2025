@@ -1,82 +1,122 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-    name = "personas",
-    uniqueConstraints = {
+@Table(name = "personas", uniqueConstraints = {
         @UniqueConstraint(name = "uk_persona_rut", columnNames = "rut"),
         @UniqueConstraint(name = "uk_persona_correo", columnNames = "correo")
-    }
-)
+})
 public class Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Datos personales
     @Column(nullable = false, length = 80)
-    private String nombre;
+    private String nombres;
 
     @Column(nullable = false, length = 80)
-    private String apellido;
+    private String apellidos;
 
     @Column(nullable = false, length = 20)
     private String rut;
 
-    @Column(nullable = false, length = 120)
-    private String correo;
+    private LocalDate fechaNacimiento;
+
+    @Column(length = 30)
+    private String sexo;
+
+    @Column(length = 60)
+    private String nacionalidad;
+
+    @Column(length = 30)
+    private String estadoCivil;
 
     @Column(length = 30)
     private String telefono;
 
-    // write-only: se recibe en requests (register/login) pero no se serializa en responses
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false, length = 200)
-    private String password;
+    @Column(nullable = false, length = 120)
+    private String correo;
+
+    @Column(length = 200)
+    private String direccion;
+
+    @Column(length = 120)
+    private String discapacidad;
 
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Trabajo> trabajos = new ArrayList<>();
+    private List<Experiencia> experiencias = new ArrayList<>();
 
-    // --- helpers para mantener ambos lados de la relación ---
-    public void addTrabajo(Trabajo t) {
-        trabajos.add(t);
-        t.setPersona(this);
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Educacion> estudios = new ArrayList<>();
+
+    // Helpers
+    public void addExperiencia(Experiencia e) {
+        experiencias.add(e);
+        e.setPersona(this);
+    }
+    public void removeExperiencia(Experiencia e) {
+        experiencias.remove(e);
+        e.setPersona(null);
+    }
+    public void addEstudio(Educacion ed) {
+        estudios.add(ed);
+        ed.setPersona(this);
+    }
+    public void removeEstudio(Educacion ed) {
+        estudios.remove(ed);
+        ed.setPersona(null);
     }
 
-    public void removeTrabajo(Trabajo t) {
-        trabajos.remove(t);
-        t.setPersona(null);
-    }
-
-    // --- getters/setters ---
+    // Getters/Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getNombres() { return nombres; }
+    public void setNombres(String nombres) { this.nombres = nombres; }
 
-    public String getApellido() { return apellido; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
+    public String getApellidos() { return apellidos; }
+    public void setApellidos(String apellidos) { this.apellidos = apellidos; }
 
     public String getRut() { return rut; }
     public void setRut(String rut) { this.rut = rut; }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+
+    public String getSexo() { return sexo; }
+    public void setSexo(String sexo) { this.sexo = sexo; }
+
+    public String getNacionalidad() { return nacionalidad; }
+    public void setNacionalidad(String nacionalidad) { this.nacionalidad = nacionalidad; }
+
+    public String getEstadoCivil() { return estadoCivil; }
+    public void setEstadoCivil(String estadoCivil) { this.estadoCivil = estadoCivil; }
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
 
-    public List<Trabajo> getTrabajos() { return trabajos; }
-    public void setTrabajos(List<Trabajo> trabajos) { this.trabajos = trabajos; }
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
+
+    public String getDiscapacidad() { return discapacidad; }
+    public void setDiscapacidad(String discapacidad) { this.discapacidad = discapacidad; }
+
+    public List<Experiencia> getExperiencias() { return experiencias; }
+    public void setExperiencias(List<Experiencia> experiencias) { this.experiencias = experiencias; }
+
+    public List<Educacion> getEstudios() { return estudios; }
+    public void setEstudios(List<Educacion> estudios) { this.estudios = estudios; }
 }
