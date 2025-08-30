@@ -1,17 +1,19 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "personas",
-       uniqueConstraints = {
-           @UniqueConstraint(name = "uk_persona_rut", columnNames = "rut"),
-           @UniqueConstraint(name = "uk_persona_correo", columnNames = "correo")
-       })
+@Table(
+    name = "personas",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_persona_rut", columnNames = "rut"),
+        @UniqueConstraint(name = "uk_persona_correo", columnNames = "correo")
+    }
+)
 public class Persona {
 
     @Id
@@ -33,7 +35,8 @@ public class Persona {
     @Column(length = 30)
     private String telefono;
 
-    @JsonIgnore
+    // write-only: se recibe en requests (register/login) pero no se serializa en responses
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 200)
     private String password;
 
@@ -41,7 +44,7 @@ public class Persona {
     @JsonManagedReference
     private List<Trabajo> trabajos = new ArrayList<>();
 
-    // helpers relación bidireccional
+    // --- helpers para mantener ambos lados de la relación ---
     public void addTrabajo(Trabajo t) {
         trabajos.add(t);
         t.setPersona(this);
@@ -52,7 +55,7 @@ public class Persona {
         t.setPersona(null);
     }
 
-    // getters/setters
+    // --- getters/setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -12,11 +12,10 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-
     @Value("${jwt.secret:change-this-secret-at-least-32-chars-please-123456}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration:3600000}") // 1 hora
+    @Value("${jwt.expiration:3600000}")
     private long jwtExpirationInMs;
 
     private SecretKey key() {
@@ -25,28 +24,21 @@ public class JwtTokenProvider {
 
     public String generarToken(String username) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + jwtExpirationInMs);
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(now)
-                .expiration(expiry)
+                .expiration(new Date(now.getTime() + jwtExpirationInMs))
                 .signWith(key(), Jwts.SIG.HS512)
                 .compact();
     }
 
     public String getUsernameFromJWT(String token) {
         return Jwts.parser().verifyWith(key()).build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+                .parseSignedClaims(token).getPayload().getSubject();
     }
 
     public boolean validarToken(String token) {
-        try {
-            Jwts.parser().verifyWith(key()).build().parse(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
+        try { Jwts.parser().verifyWith(key()).build().parse(token); return true; }
+        catch (JwtException | IllegalArgumentException e) { return false; }
     }
 }

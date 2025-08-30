@@ -16,6 +16,9 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final String AUTH = "Authorization";
+    private static final String BEARER = "Bearer ";
+
     private final JwtTokenProvider tokenProvider;
 
     public JwtAuthenticationFilter(JwtTokenProvider tokenProvider) {
@@ -23,12 +26,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain) throws ServletException, IOException {
 
-        String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
+        String header = request.getHeader(AUTH);
+        if (header != null && header.startsWith(BEARER)) {
+            String token = header.substring(BEARER.length());
             if (tokenProvider.validarToken(token)) {
                 String correo = tokenProvider.getUsernameFromJWT(token);
                 var auth = new UsernamePasswordAuthenticationToken(correo, null, List.of());
@@ -37,5 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         chain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String p = request.getServletPath();
+        // No aplicar filtro a rutas públicas, consola H2 ni preflight
+        return p.startsWith("/auth")
+                || p.startsWith("/h2-console")
+                || "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 }
