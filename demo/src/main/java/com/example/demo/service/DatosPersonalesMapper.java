@@ -4,7 +4,7 @@ import com.example.demo.dto.DatosPersonalesDTO;
 import com.example.demo.entity.*;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Component

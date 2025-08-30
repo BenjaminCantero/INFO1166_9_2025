@@ -48,7 +48,7 @@ public class DatosPersonalesController {
         return ResponseEntity.ok(personas);
     }
     
-    // POST /api/datos-personales - Crear nuevo
+    // POST /api/datos-personales - Crear nuevo (solo datos básicos)
     @PostMapping
     public ResponseEntity<?> createDatosPersonales(@Valid @RequestBody DatosPersonalesDTO datosPersonalesDTO) {
         try {
@@ -70,6 +70,32 @@ public class DatosPersonalesController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al crear los datos personales: " + e.getMessage());
+        }
+    }
+    
+    // POST /api/datos-personales/completo - Crear nuevo con toda la información
+    @PostMapping("/completo")
+    public ResponseEntity<?> createDatosPersonalesCompleto(@Valid @RequestBody DatosPersonalesDTO datosPersonalesDTO) {
+        try {
+            // Validar RUT único
+            if (datosPersonalesService.existsByRut(datosPersonalesDTO.getRut())) {
+                return ResponseEntity.badRequest()
+                        .body("Error: Ya existe una persona con el RUT " + datosPersonalesDTO.getRut());
+            }
+            
+            // Validar correo único
+            if (datosPersonalesService.existsByCorreo(datosPersonalesDTO.getCorreo())) {
+                return ResponseEntity.badRequest()
+                        .body("Error: Ya existe una persona con el correo " + datosPersonalesDTO.getCorreo());
+            }
+            
+            // Crear con toda la información relacionada
+            DatosPersonalesDTO nuevaPersona = datosPersonalesService.createComplete(datosPersonalesDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaPersona);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear los datos personales completos: " + e.getMessage());
         }
     }
     
