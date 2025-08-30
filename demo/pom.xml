@@ -21,6 +21,11 @@
   </properties>
 
   <dependencies>
+    <!-- Thymeleaf para vistas -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
     <!-- Web y JPA -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

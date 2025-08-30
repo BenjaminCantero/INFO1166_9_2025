@@ -101,10 +101,8 @@
     </style>
 </head>
 <body>
-    <form th:action="@{/api/datos-personales}" method="post" class="main-container">
-        <div style="text-align:right; color:#1976d2; font-weight:bold; margin-bottom:10px;">
-            Usuario logueado: <span th:text="${session.usuario}"></span>
-        </div>
+    <form th:action="@{/enviar}" method="post" class="main-container">
+    <!-- Usuario logueado eliminado para evitar error de contexto -->
         
         <!-- Datos Personales -->
         <div class="section">

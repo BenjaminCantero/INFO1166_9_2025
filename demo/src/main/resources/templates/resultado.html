@@ -5,8 +5,41 @@
 </head>
 <body>
     <h2>Datos recibidos:</h2>
-    <p>Nombre: <span th:text="${nombre}"></span></p>
-    <p>Email: <span th:text="${email}"></span></p>
+    <h3>Datos Personales</h3>
+    <ul>
+        <li>Nombres: <span th:text="${nombres}"></span></li>
+        <li>Apellidos: <span th:text="${apellidos}"></span></li>
+        <li>RUT: <span th:text="${rut}"></span></li>
+        <li>Fecha de Nacimiento: <span th:text="${fecha_nacimiento}"></span></li>
+        <li>Sexo: <span th:text="${sexo}"></span></li>
+        <li>Nacionalidad: <span th:text="${nacionalidad}"></span></li>
+        <li>Estado Civil: <span th:text="${estado_civil}"></span></li>
+        <li>Teléfono: <span th:text="${telefono}"></span></li>
+        <li>Correo Electrónico: <span th:text="${correo}"></span></li>
+        <li>Dirección: <span th:text="${direccion}"></span></li>
+        <li>¿Discapacidad?: <span th:text="${discapacidad}"></span></li>
+    </ul>
+    <h3>Antecedentes Laborales</h3>
+    <ul>
+        <li>Empresa: <span th:text="${empresa}"></span></li>
+        <li>Cargo: <span th:text="${cargo}"></span></li>
+        <li>Rubro: <span th:text="${rubro}"></span></li>
+        <li>Fecha Inicio: <span th:text="${fecha_inicio}"></span></li>
+        <li>Fecha Fin: <span th:text="${fecha_fin}"></span></li>
+        <li>Tipo de Contrato: <span th:text="${tipo_contrato}"></span></li>
+        <li>Sueldo: <span th:text="${sueldo}"></span></li>
+        <li>Motivo de término: <span th:text="${motivo}"></span></li>
+        <li>Descripción: <span th:text="${descripcion}"></span></li>
+    </ul>
+    <h3>Información de Estudios</h3>
+    <ul>
+        <li>Nivel Educativo: <span th:text="${nivel_educativo}"></span></li>
+        <li>Institución: <span th:text="${institucion}"></span></li>
+        <li>Carrera: <span th:text="${carrera}"></span></li>
+        <li>Año Inicio: <span th:text="${anio_inicio}"></span></li>
+        <li>Año Fin: <span th:text="${anio_fin}"></span></li>
+        <li>Estado: <span th:text="${estado_estudio}"></span></li>
+    </ul>
     <a th:href="@{/formulario}">Volver</a>
 </body>
 </html>
