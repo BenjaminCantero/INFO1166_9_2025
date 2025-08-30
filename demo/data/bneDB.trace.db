@@ -1,0 +1,28 @@
+2025-08-30 12:12:02.822532-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "-- Datos Personales\000aCREATE TABLE datos_personales (\000a    id_datos_personales BIGINT AUTO_INCREMENT PRIMARY KEY,\000a    nombres VARCHAR(255),\000a    apellidos VARCHAR(255),\000a    rut VARCHAR(50) UNIQUE,[*],\000a    fecha_nacimiento DATE,\000a    sexo VARCHAR(50),\000a    nacionalidad VARCHAR(50),\000a    estado_civil VARCHAR(50),\000a    telefono VARCHAR(50),\000a    correo VARCHAR(255) UNIQUE,,\000a    direccion VARCHAR(255),\000a    discapacidad BOOLEAN\000a)"; se esperaba "identifier"
+Syntax error in SQL statement "-- Datos Personales\000aCREATE TABLE datos_personales (\000a    id_datos_personales BIGINT AUTO_INCREMENT PRIMARY KEY,\000a    nombres VARCHAR(255),\000a    apellidos VARCHAR(255),\000a    rut VARCHAR(50) UNIQUE,[*],\000a    fecha_nacimiento DATE,\000a    sexo VARCHAR(50),\000a    nacionalidad VARCHAR(50),\000a    estado_civil VARCHAR(50),\000a    telefono VARCHAR(50),\000a    correo VARCHAR(255) UNIQUE,,\000a    direccion VARCHAR(255),\000a    discapacidad BOOLEAN\000a)"; expected "identifier"; SQL statement:
+-- Datos Personales
+CREATE TABLE datos_personales (
+    id_datos_personales BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(255),
+    apellidos VARCHAR(255),
+    rut VARCHAR(50) UNIQUE,,
+    fecha_nacimiento DATE,
+    sexo VARCHAR(50),
+    nacionalidad VARCHAR(50),
+    estado_civil VARCHAR(50),
+    telefono VARCHAR(50),
+    correo VARCHAR(255) UNIQUE,,
+    direccion VARCHAR(255),
+    discapacidad BOOLEAN
+) [42001-232]
+2025-08-30 12:18:18.399919-04:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "RUBROS" ya existe
+Table "RUBROS" already exists; SQL statement:
+-- =====================================
+-- V1__init.sql - Creación de tablas
+-- ===================== [42101-232]
+2025-08-30 12:27:26.612668-04:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM ANTECEDENTES_LABORALES CARRERAS [*]DATOS_PERSONALES"
+Syntax error in SQL statement "SELECT * FROM ANTECEDENTES_LABORALES CARRERAS [*]DATOS_PERSONALES"; SQL statement:
+SELECT * FROM ANTECEDENTES_LABORALES CARRERAS DATOS_PERSONALES [42000-232]
