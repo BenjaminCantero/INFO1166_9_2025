@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Backend OK</title>
+</head>
+<body>
+  <h1>Hola desde el backend</h1>
+
+  <p>URL del backend: <code id="backendUrl"></code></p>
+
+  <p>
+    Endpoint de prueba: 
+    <a id="helloLink" href="#">/api/hello</a>
+  </p>
+
+  <pre id="helloOut"></pre>
+
+  <script>
+    // Detecta el origen (http://localhost:8080, o el que sea en despliegue)
+    const backend = `${location.protocol}//${location.host}`;
+    document.getElementById('backendUrl').textContent = backend;
+
+    // Link al endpoint
+    const helloUrl = backend + '/api/hello';
+    const a = document.getElementById('helloLink');
+    a.href = helloUrl;
+
+    // Llama al endpoint y muestra la respuesta
+    fetch(helloUrl).then(r => r.json())
+      .then(j => document.getElementById('helloOut').textContent = JSON.stringify(j, null, 2))
+      .catch(e => document.getElementById('helloOut').textContent = 'Error: ' + e.message);
+  </script>
+</body>
+</html>
