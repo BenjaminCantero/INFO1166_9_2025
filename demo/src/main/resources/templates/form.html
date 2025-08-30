@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario BNE Estilo</title>
+    <title>Formulario BNE Mejorado</title>
     <style>
         body {
             background-color: #f4f6f8;
@@ -10,67 +10,83 @@
             margin: 0;
             padding: 0;
         }
-
         .main-container {
             max-width: 1100px;
             margin: 40px auto;
             background: #fff;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.10);
         }
-
-        h1 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-        }
-
-        .section {
+        .nav-sections {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             margin-bottom: 30px;
         }
-
+        .nav-sections a {
+            text-decoration: none;
+            color: #1976d2;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: background 0.2s;
+        }
+        .nav-sections a:hover {
+            background: #e3f0fa;
+        }
+        .card {
+            background: #f9fafb;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(25, 118, 210, 0.04);
+            padding: 24px 20px 18px 20px;
+            margin-bottom: 32px;
+        }
+        .card h1 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #1976d2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            padding-bottom: 0;
+        }
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
         }
-
         label {
             font-size: 14px;
             color: #555;
             margin-bottom: 4px;
             display: block;
         }
-
         input, select, textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #b0bec5;
             border-radius: 6px;
             font-size: 14px;
             box-sizing: border-box;
+            background: #fff;
         }
-
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #1976d2;
-            box-shadow: 0 0 4px rgba(25, 118, 210, 0.2);
+            box-shadow: 0 0 4px rgba(25, 118, 210, 0.18);
         }
-
         textarea {
             min-height: 80px;
             resize: vertical;
         }
-
         .btn-container {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
         }
-
         .btn {
             padding: 12px 24px;
             font-size: 16px;
@@ -78,35 +94,48 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .btn-secondary {
             background: #fff;
             color: #1976d2;
             border: 1px solid #1976d2;
         }
-
         .btn-secondary:hover {
             background: #f0f0f0;
         }
-
         .btn-primary {
             background: #1976d2;
             color: #fff;
             border: none;
         }
-
         .btn-primary:hover {
             background: #1565c0;
+        }
+        @media (max-width: 700px) {
+            .main-container {
+                padding: 10px;
+            }
+            .card {
+                padding: 12px 6px 10px 6px;
+            }
+            .nav-sections {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <form th:action="@{/enviar}" method="post" class="main-container">
-    <!-- Usuario logueado eliminado para evitar error de contexto -->
-        
+        <!-- Navegación interna -->
+        <nav class="nav-sections">
+            <a href="#datos-personales">👤 Datos Personales</a>
+            <a href="#antecedentes-laborales">💼 Antecedentes Laborales</a>
+            <a href="#informacion-estudios">🎓 Información de Estudios</a>
+        </nav>
+
         <!-- Datos Personales -->
-        <div class="section">
-            <h1>Datos Personales</h1>
+        <div class="card" id="datos-personales">
+            <h1>👤 Datos Personales</h1>
             <div class="form-grid">
                 <div>
                     <label for="nombres">Nombres</label>
@@ -171,8 +200,8 @@
         </div>
 
         <!-- Antecedentes Laborales -->
-        <div class="section">
-            <h1>Antecedentes Laborales</h1>
+        <div class="card" id="antecedentes-laborales">
+            <h1>💼 Antecedentes Laborales</h1>
             <div class="form-grid">
                 <div>
                     <label for="empresa">Empresa donde trabajó</label>
@@ -219,8 +248,8 @@
         </div>
 
         <!-- Información de Estudios -->
-        <div class="section">
-            <h1>Información de Estudios</h1>
+        <div class="card" id="informacion-estudios">
+            <h1>🎓 Información de Estudios</h1>
             <div class="form-grid">
                 <div>
                     <label for="nivel_educativo">Nivel educativo</label>
