@@ -17,12 +17,21 @@ public class DatosPersonalesDTO {
     // Antecedentes laborales
     private String empresa;
     private String cargo;
-    private String duracion;
-    private String afp;
-    private String fonasa;
-    private String situacion;
-    private String educacion;
+    private String rubro;
+    private String fecha_inicio;
+    private String fecha_fin;
+    private String tipo_contrato;
+    private String sueldo;
+    private String motivo;
     private String descripcion;
+
+    // Información de estudios
+    private String nivel_educativo;
+    private String institucion;
+    private String carrera;
+    private String anio_inicio;
+    private String anio_fin;
+    private String estado_estudio;
 
     // Getters y setters
     public String getNombres() { return nombres; }
@@ -64,21 +73,42 @@ public class DatosPersonalesDTO {
     public String getCargo() { return cargo; }
     public void setCargo(String cargo) { this.cargo = cargo; }
 
-    public String getDuracion() { return duracion; }
-    public void setDuracion(String duracion) { this.duracion = duracion; }
+    public String getRubro() { return rubro; }
+    public void setRubro(String rubro) { this.rubro = rubro; }
 
-    public String getAfp() { return afp; }
-    public void setAfp(String afp) { this.afp = afp; }
+    public String getFecha_inicio() { return fecha_inicio; }
+    public void setFecha_inicio(String fecha_inicio) { this.fecha_inicio = fecha_inicio; }
 
-    public String getFonasa() { return fonasa; }
-    public void setFonasa(String fonasa) { this.fonasa = fonasa; }
+    public String getFecha_fin() { return fecha_fin; }
+    public void setFecha_fin(String fecha_fin) { this.fecha_fin = fecha_fin; }
 
-    public String getSituacion() { return situacion; }
-    public void setSituacion(String situacion) { this.situacion = situacion; }
+    public String getTipo_contrato() { return tipo_contrato; }
+    public void setTipo_contrato(String tipo_contrato) { this.tipo_contrato = tipo_contrato; }
 
-    public String getEducacion() { return educacion; }
-    public void setEducacion(String educacion) { this.educacion = educacion; }
+    public String getSueldo() { return sueldo; }
+    public void setSueldo(String sueldo) { this.sueldo = sueldo; }
+
+    public String getMotivo() { return motivo; }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public String getNivel_educativo() { return nivel_educativo; }
+    public void setNivel_educativo(String nivel_educativo) { this.nivel_educativo = nivel_educativo; }
+
+    public String getInstitucion() { return institucion; }
+    public void setInstitucion(String institucion) { this.institucion = institucion; }
+
+    public String getCarrera() { return carrera; }
+    public void setCarrera(String carrera) { this.carrera = carrera; }
+
+    public String getAnio_inicio() { return anio_inicio; }
+    public void setAnio_inicio(String anio_inicio) { this.anio_inicio = anio_inicio; }
+
+    public String getAnio_fin() { return anio_fin; }
+    public void setAnio_fin(String anio_fin) { this.anio_fin = anio_fin; }
+
+    public String getEstado_estudio() { return estado_estudio; }
+    public void setEstado_estudio(String estado_estudio) { this.estado_estudio = estado_estudio; }
 }

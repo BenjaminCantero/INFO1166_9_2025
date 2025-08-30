@@ -28,12 +28,19 @@
             <li><strong>Discapacidad:</strong> <span th:text="${datos.discapacidad}"></span></li>
             <li><strong>Empresa donde trabajó:</strong> <span th:text="${datos.empresa}"></span></li>
             <li><strong>Cargo desempeñado:</strong> <span th:text="${datos.cargo}"></span></li>
-            <li><strong>Duración en la empresa:</strong> <span th:text="${datos.duracion}"></span></li>
-            <li><strong>AFP:</strong> <span th:text="${datos.afp}"></span></li>
-            <li><strong>Fonasa:</strong> <span th:text="${datos.fonasa}"></span></li>
-            <li><strong>Situación laboral actual:</strong> <span th:text="${datos.situacion}"></span></li>
-            <li><strong>Educación:</strong> <span th:text="${datos.educacion}"></span></li>
+            <li><strong>Rubro o industria:</strong> <span th:text="${datos.rubro}"></span></li>
+            <li><strong>Fecha de inicio:</strong> <span th:text="${datos.fecha_inicio}"></span></li>
+            <li><strong>Fecha de término:</strong> <span th:text="${datos.fecha_fin}"></span></li>
+            <li><strong>Tipo de contrato:</strong> <span th:text="${datos.tipo_contrato}"></span></li>
+            <li><strong>Sueldo aproximado:</strong> <span th:text="${datos.sueldo}"></span></li>
+            <li><strong>Motivo de término:</strong> <span th:text="${datos.motivo}"></span></li>
             <li><strong>Descripción del trabajo realizado:</strong> <span th:text="${datos.descripcion}"></span></li>
+            <li><strong>Nivel educativo:</strong> <span th:text="${datos.nivel_educativo}"></span></li>
+            <li><strong>Nombre de la institución:</strong> <span th:text="${datos.institucion}"></span></li>
+            <li><strong>Título o carrera:</strong> <span th:text="${datos.carrera}"></span></li>
+            <li><strong>Año de inicio:</strong> <span th:text="${datos.anio_inicio}"></span></li>
+            <li><strong>Año de término:</strong> <span th:text="${datos.anio_fin}"></span></li>
+            <li><strong>Estado de estudio:</strong> <span th:text="${datos.estado_estudio}"></span></li>
         </ul>
         <a class="volver" th:href="@{/formulario}">Volver al formulario</a>
     </div>
