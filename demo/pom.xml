@@ -104,6 +104,17 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>11.7.2</version>
+				<configuration>
+					<url>jdbc:h2:file:./data/bneDB</url>
+					<user>sa</user>
+					<password></password>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
