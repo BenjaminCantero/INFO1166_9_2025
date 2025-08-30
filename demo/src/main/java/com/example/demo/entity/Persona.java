@@ -1,85 +1,79 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "personas",
+       uniqueConstraints = {
+           @UniqueConstraint(name = "uk_persona_rut", columnNames = "rut"),
+           @UniqueConstraint(name = "uk_persona_correo", columnNames = "correo")
+       })
 public class Persona {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 80)
     private String nombre;
+
+    @Column(nullable = false, length = 80)
     private String apellido;
+
+    @Column(nullable = false, length = 20)
     private String rut;
+
+    @Column(nullable = false, length = 120)
     private String correo;
+
+    @Column(length = 30)
     private String telefono;
+
+    @JsonIgnore
+    @Column(nullable = false, length = 200)
     private String password;
 
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-    private List<Trabajo> trabajos;
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Trabajo> trabajos = new ArrayList<>();
 
-    // Getters y setters
-    public Long getId() {
-        return id;
+    // helpers relación bidireccional
+    public void addTrabajo(Trabajo t) {
+        trabajos.add(t);
+        t.setPersona(this);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void removeTrabajo(Trabajo t) {
+        trabajos.remove(t);
+        t.setPersona(null);
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    // getters/setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getApellido() {
-        return apellido;
-    }
+    public String getApellido() { return apellido; }
+    public void setApellido(String apellido) { this.apellido = apellido; }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+    public String getRut() { return rut; }
+    public void setRut(String rut) { this.rut = rut; }
 
-    public String getRut() {
-        return rut;
-    }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
 
-    public void setRut(String rut) {
-        this.rut = rut;
-    }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
-    public String getCorreo() {
-        return correo;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Trabajo> getTrabajos() {
-        return trabajos;
-    }
-
-    public void setTrabajos(List<Trabajo> trabajos) {
-        this.trabajos = trabajos;
-    }
+    public List<Trabajo> getTrabajos() { return trabajos; }
+    public void setTrabajos(List<Trabajo> trabajos) { this.trabajos = trabajos; }
 }

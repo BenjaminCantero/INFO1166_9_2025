@@ -21,14 +21,22 @@ public class TrabajoService {
         this.personaRepository = personaRepository;
     }
 
-    /** Crea un trabajo y lo asocia a la persona correcta. */
-    public Trabajo crearParaPersona(Long personaId, Trabajo t) {
-        Persona persona = personaRepository.findById(personaId)
-                .orElseThrow(() -> new IllegalArgumentException("Persona no encontrada: " + personaId));
+    // usado por /api/me/trabajos (controller ya setea persona)
+    public Trabajo guardar(Trabajo trabajo) {
+        return trabajoRepository.save(trabajo);
+    }
 
-        // Asegurar la relación en ambos lados
-        persona.addTrabajo(t);
-        // gracias al cascade de Persona podríamos guardar persona, pero es más simple guardar el trabajo:
+    // usado por /api/me/trabajos (GET)
+    @Transactional(readOnly = true)
+    public List<Trabajo> listarPorPersona(Persona persona) {
+        return trabajoRepository.findByPersona(persona);
+    }
+
+    // utilidades adicionales
+    public Trabajo crearParaPersona(Long personaId, Trabajo t) {
+        Persona p = personaRepository.findById(personaId)
+                .orElseThrow(() -> new IllegalArgumentException("Persona no encontrada: " + personaId));
+        p.addTrabajo(t);
         return trabajoRepository.save(t);
     }
 
@@ -37,7 +45,5 @@ public class TrabajoService {
         return trabajoRepository.findByPersonaId(personaId);
     }
 
-    public void eliminar(Long trabajoId) {
-        trabajoRepository.deleteById(trabajoId);
-    }
+    public void eliminar(Long trabajoId) { trabajoRepository.deleteById(trabajoId); }
 }
