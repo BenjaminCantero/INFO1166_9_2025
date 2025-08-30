@@ -17,24 +17,19 @@ public class PersonaService {
         this.personaRepository = personaRepository;
     }
 
-    // usado por /auth/register
     public Persona guardar(Persona persona) {
         return personaRepository.save(persona);
     }
 
-    // usado por /api/me
     @Transactional(readOnly = true)
     public Persona buscarPorCorreo(String correo) {
         return personaRepository.findByCorreo(correo).orElse(null);
     }
 
-    // usado por /api/me (PUT)
     public Persona actualizar(Persona persona) {
-        // si viene con id nulo, save() inserta; si viene con id, actualiza
         return personaRepository.save(persona);
     }
 
-    // utilidades adicionales (por si las necesitan)
     @Transactional(readOnly = true)
     public Persona obtenerPorId(Long id) {
         return personaRepository.findById(id)
@@ -42,5 +37,7 @@ public class PersonaService {
     }
 
     @Transactional(readOnly = true)
-    public List<Persona> listar() { return personaRepository.findAll(); }
+    public List<Persona> listar() {
+        return personaRepository.findAll();
+    }
 }
