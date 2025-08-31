@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Antecedentes Laborales</title>
+</head>
+<body>
+<div th:fragment="antecedentes-laborales" class="card" id="antecedentes-laborales">
+    <h1>💼 Antecedentes Laborales</h1>
+    <div class="form-grid">
+        <div>
+            <label for="empresa">Empresa donde trabajó</label>
+            <input type="text" id="empresa" name="empresa" placeholder="Ej: Empresa ABC" required>
+        </div>
+        <div>
+            <label for="cargo">Cargo desempeñado</label>
+            <input type="text" id="cargo" name="cargo" placeholder="Ej: Analista" required>
+        </div>
+        <div>
+            <label for="rubro">Rubro o industria</label>
+            <input type="text" id="rubro" name="rubro" placeholder="Ej: Tecnología, Retail" required>
+        </div>
+        <div>
+            <label for="fecha_inicio">Fecha de inicio</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" required>
+        </div>
+        <div>
+            <label for="fecha_fin">Fecha de término</label>
+            <input type="date" id="fecha_fin" name="fecha_fin">
+        </div>
+        <div>
+            <label for="tipo_contrato">Tipo de contrato</label>
+            <select id="tipo_contrato" name="tipo_contrato" required>
+                <option value="">Seleccione...</option>
+                <option value="Plazo fijo">Plazo fijo</option>
+                <option value="Indefinido">Indefinido</option>
+                <option value="Honorarios">Honorarios</option>
+            </select>
+        </div>
+        <div>
+            <label for="sueldo">Sueldo aproximado</label>
+            <input type="text" id="sueldo" name="sueldo" placeholder="Ej: $800.000" required>
+        </div>
+        <div>
+            <label for="motivo">Motivo de término</label>
+            <input type="text" id="motivo" name="motivo" placeholder="Ej: Fin de contrato" required>
+        </div>
+        <div style="grid-column: span 2;">
+            <label for="descripcion">Descripción del trabajo realizado</label>
+            <textarea id="descripcion" name="descripcion" placeholder="Describa las funciones realizadas..." required></textarea>
+        </div>
+    </div>
+</div>
+</body>
+</html>
