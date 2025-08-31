@@ -2,12 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario BNE Mejorado</title>
-     <link rel="stylesheet" th:href="@{/static/form-bne.css}">
+    <title>Formulario BNE Mejorado</title> 
+    <link rel="stylesheet" th:href="@{/css/form-bne.css}">
+
 </head>
 <body>
     <form th:action="@{/enviar}" method="post" class="main-container">
-        
+
      <nav class="nav-sections">
             <a href="#datos-personales">👤 Datos Personales</a>
             <a href="#antecedentes-laborales">💼 Antecedentes Laborales</a>
@@ -23,6 +24,7 @@
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
         </div>
     </form>
+
 
     <script th:src="@{/js/form-bne.js}"></script>
 </body>
