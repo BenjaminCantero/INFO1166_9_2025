@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Currículum Vitae</title>
+    <link rel="stylesheet" th:href="@{/css/form-bne.css}" />
+</head>
+<body>
+    <div class="cv-container">
+        <h1>Currículum Vitae</h1>
+        <div class="section">
+            <h2>Datos Personales</h2>
+            <ul>
+                <li><span class="label">Nombres:</span> <span th:text="${nombres}"></span></li>
+                <li><span class="label">Apellidos:</span> <span th:text="${apellidos}"></span></li>
+                <li><span class="label">Teléfono:</span> <span th:text="${telefono}"></span></li>
+                <li><span class="label">Correo:</span> <span th:text="${correo}"></span></li>
+                <li><span class="label">Edad:</span> <span th:text="${edad}"></span></li>
+                <li><span class="label">Domicilio:</span> <span th:text="${direccion}"></span></li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Experiencia Laboral</h2>
+            <ul>
+                <li th:each="exp : ${experienciasLaborales}">
+                    <span class="label" th:text="${exp.cargo}"></span> en <span th:text="${exp.empresa}"></span> 
+                    (<span th:text="${exp.fecha_inicio}"></span> a <span th:text="${exp.fecha_fin}"></span>)
+                </li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Estudios</h2>
+            <ul>
+                <li th:each="est : ${estudios}">
+                    <span class="label" th:text="${est.institucion}"></span> - <span th:text="${est.carrera}"></span>
+                    (<span th:text="${est.anio_inicio}"></span> a <span th:text="${est.anio_fin}"></span>)
+                </li>
+            </ul>
+        </div>
+        <a th:href="@{/formulario}">Volver al formulario</a>
+    </div>
+</body>
+</html>

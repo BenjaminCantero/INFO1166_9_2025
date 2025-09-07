@@ -1,17 +1,11 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
-import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "instituciones")
@@ -19,15 +13,16 @@ import lombok.ToString;
 @Setter
 @ToString(exclude = {"informacionEstudios"})
 public class Instituciones {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_institucion")
     private Long idInstitucion;
-
+    
+    @Column(name = "nombre_institucion")
     private String nombreInstitucion;
-
-    // Relacion
+    
+    // Relación
     @OneToMany(mappedBy = "institucion")
     private List<InformacionEstudios> informacionEstudios;
 }
-

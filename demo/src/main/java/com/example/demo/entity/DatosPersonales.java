@@ -1,23 +1,12 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
-
-import java.util.Date;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "datos_personales")
@@ -25,35 +14,40 @@ import lombok.ToString;
 @Setter
 @ToString(exclude = {"antecedentesLaborales", "informacionEstudios"})
 public class DatosPersonales {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_datos_personales")
     private Long idDatosPersonales;
-
+    
     private String nombres;
     private String apellidos;
-
+    
     @Column(nullable = false, unique = true)
     private String rut;
-
+    
     @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
-
+    
     private String sexo;
     private String nacionalidad;
+    
+    @Column(name = "estado_civil")
     private String estadoCivil;
+    
     private String telefono;
-
+    
     @Column(nullable = false, unique = true)
     private String correo;
     
     private String direccion;
     private Boolean discapacidad;
-
+    
     // Relaciones
     @OneToMany(mappedBy = "datosPersonales", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AntecedentesLaborales> antecedentesLaborales;
-
+    
     @OneToMany(mappedBy = "datosPersonales", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InformacionEstudios> informacionEstudios;
 }

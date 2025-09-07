@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Formulario Básico</title>
+    <meta charset="UTF-8">
+    <title>Formulario BNE Mejorado</title> 
+    <link rel="stylesheet" th:href="@{/css/form-bne.css}">
+
 </head>
 <body>
-    <h1>Formulario de contacto</h1>
-    <form th:action="@{/enviar}" method="post">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <button type="submit">Enviar</button>
+    <form th:action="@{/enviar}" method="post" class="main-container">
+
+     <nav class="nav-sections">
+            <a href="#datos-personales">👤 Datos Personales</a>
+            <a href="#antecedentes-laborales">💼 Antecedentes Laborales</a>
+            <a href="#informacion-estudios">🎓 Información de Estudios</a>
+        </nav>
+
+        <div th:replace="fragments/datos-personales :: datos-personales"></div>
+        <div th:replace="fragments/antecedentes-laborales :: antecedentes-laborales"></div>
+        <div th:replace="fragments/informacion-estudios :: informacion-estudios"></div>
+
+        <div class="btn-container">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Volver</button>
+            <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+        </div>
     </form>
+
+
+    <script th:src="@{/js/form-bne.js}"></script>
 </body>
 </html>

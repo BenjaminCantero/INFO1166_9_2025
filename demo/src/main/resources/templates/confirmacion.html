@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirmación</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; }
+        .container { background: #fff; max-width: 500px; margin: 40px auto; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        h2 { color: #1976d2; text-align: center; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 8px; }
+        .volver { display: block; text-align: center; margin-top: 20px; color: #1976d2; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 th:text="${mensaje}"></h2>
+        <ul>
+            <li><strong>Nombres:</strong> <span th:text="${datos.nombres}"></span></li>
+            <li><strong>Apellidos:</strong> <span th:text="${datos.apellidos}"></span></li>
+            <li><strong>RUT:</strong> <span th:text="${datos.rut}"></span></li>
+            <li><strong>Fecha de nacimiento:</strong> <span th:text="${datos.fecha_nacimiento}"></span></li>
+            <li><strong>Sexo:</strong> <span th:text="${datos.sexo}"></span></li>
+            <li><strong>Nacionalidad:</strong> <span th:text="${datos.nacionalidad}"></span></li>
+            <li><strong>Estado civil:</strong> <span th:text="${datos.estado_civil}"></span></li>
+            <li><strong>Teléfono:</strong> <span th:text="${datos.telefono}"></span></li>
+            <li><strong>Correo:</strong> <span th:text="${datos.correo}"></span></li>
+            <li><strong>Dirección:</strong> <span th:text="${datos.direccion}"></span></li>
+            <li><strong>Discapacidad:</strong> <span th:text="${datos.discapacidad}"></span></li>
+            <li><strong>Empresa donde trabajó:</strong> <span th:text="${datos.empresa}"></span></li>
+            <li><strong>Cargo desempeñado:</strong> <span th:text="${datos.cargo}"></span></li>
+            <li><strong>Rubro o industria:</strong> <span th:text="${datos.rubro}"></span></li>
+            <li><strong>Fecha de inicio:</strong> <span th:text="${datos.fecha_inicio}"></span></li>
+            <li><strong>Fecha de término:</strong> <span th:text="${datos.fecha_fin}"></span></li>
+            <li><strong>Tipo de contrato:</strong> <span th:text="${datos.tipo_contrato}"></span></li>
+            <li><strong>Sueldo aproximado:</strong> <span th:text="${datos.sueldo}"></span></li>
+            <li><strong>Motivo de término:</strong> <span th:text="${datos.motivo}"></span></li>
+            <li><strong>Descripción del trabajo realizado:</strong> <span th:text="${datos.descripcion}"></span></li>
+            <li><strong>Nivel educativo:</strong> <span th:text="${datos.nivel_educativo}"></span></li>
+            <li><strong>Nombre de la institución:</strong> <span th:text="${datos.institucion}"></span></li>
+            <li><strong>Título o carrera:</strong> <span th:text="${datos.carrera}"></span></li>
+            <li><strong>Año de inicio:</strong> <span th:text="${datos.anio_inicio}"></span></li>
+            <li><strong>Año de término:</strong> <span th:text="${datos.anio_fin}"></span></li>
+            <li><strong>Estado de estudio:</strong> <span th:text="${datos.estado_estudio}"></span></li>
+        </ul>
+        <a class="volver" th:href="@{/formulario}">Volver al formulario</a>
+    </div>
+</body>
+</html>
