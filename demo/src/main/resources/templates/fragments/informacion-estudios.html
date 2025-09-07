@@ -7,44 +7,8 @@
 <body>
 <div th:fragment="informacion-estudios" class="card" id="informacion-estudios">
     <h1>🎓 Información de Estudios</h1>
-    <div class="form-grid">
-        <div>
-            <label for="nivel_educativo">Nivel educativo</label>
-            <select id="nivel_educativo" name="nivel_educativo" required>
-                <option value="">Seleccione...</option>
-                <option value="Educación básica">Educación básica</option>
-                <option value="Educación media">Educación media</option>
-                <option value="Técnico">Técnico</option>
-                <option value="Universitario">Universitario</option>
-                <option value="Postgrado">Postgrado</option>
-            </select>
-        </div>
-        <div>
-            <label for="institucion">Nombre de la institución</label>
-            <input type="text" id="institucion" name="institucion" placeholder="Ej: Universidad de Chile" required>
-        </div>
-        <div>
-            <label for="carrera">Título o carrera</label>
-            <input type="text" id="carrera" name="carrera" placeholder="Ej: Ingeniería Comercial" required>
-        </div>
-        <div>
-            <label for="anio_inicio">Año de inicio</label>
-            <input type="number" id="anio_inicio" name="anio_inicio" placeholder="Ej: 2015" required>
-        </div>
-        <div>
-            <label for="anio_fin">Año de término</label>
-            <input type="number" id="anio_fin" name="anio_fin" placeholder="Ej: 2020">
-        </div>
-        <div>
-            <label for="estado_estudio">Estado</label>
-            <select id="estado_estudio" name="estado_estudio" required>
-                <option value="">Seleccione...</option>
-                <option value="Completo">Completo</option>
-                <option value="Incompleto">Incompleto</option>
-                <option value="En curso">En curso</option>
-            </select>
-        </div>
-    </div>
+    <div id="estudios-container"></div>
+    <button type="button" id="btn-agregar-estudio" class="btn btn-primary" style="margin-top:10px;">Agregar estudio</button>
 </div>
 </body>
 </html>

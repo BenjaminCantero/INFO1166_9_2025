@@ -21,25 +21,82 @@
     </ul>
     <h3>Antecedentes Laborales</h3>
     <ul>
-        <li>Empresa: <span th:text="${empresa}"></span></li>
-        <li>Cargo: <span th:text="${cargo}"></span></li>
-        <li>Rubro: <span th:text="${rubro}"></span></li>
-        <li>Fecha Inicio: <span th:text="${fecha_inicio}"></span></li>
-        <li>Fecha Fin: <span th:text="${fecha_fin}"></span></li>
-        <li>Tipo de Contrato: <span th:text="${tipo_contrato}"></span></li>
-        <li>Sueldo: <span th:text="${sueldo}"></span></li>
-        <li>Motivo de término: <span th:text="${motivo}"></span></li>
-        <li>Descripción: <span th:text="${descripcion}"></span></li>
+        <li th:if="${empresa != null}">Empresa: <span th:text="${empresa}"></span></li>
+        <li th:if="${cargo != null}">Cargo: <span th:text="${cargo}"></span></li>
+        <li th:if="${rubro != null}">Rubro: <span th:text="${rubro}"></span></li>
+        <li th:if="${fecha_inicio != null}">Fecha Inicio: <span th:text="${fecha_inicio}"></span></li>
+        <li th:if="${fecha_fin != null}">Fecha Fin: <span th:text="${fecha_fin}"></span></li>
+        <li th:if="${tipo_contrato != null}">Tipo de Contrato: <span th:text="${tipo_contrato}"></span></li>
+        <li th:if="${sueldo != null}">Sueldo: <span th:text="${sueldo}"></span></li>
+        <li th:if="${motivo != null}">Motivo de término: <span th:text="${motivo}"></span></li>
+        <li th:if="${descripcion != null}">Descripción: <span th:text="${descripcion}"></span></li>
+        <li th:each="exp : ${experienciasLaborales}">
+            <span th:text="${exp.cargo}"></span> en <span th:text="${exp.empresa}"></span> (<span th:text="${exp.fecha_inicio}"></span> a <span th:text="${exp.fecha_fin}"></span>)
+        </li>
     </ul>
     <h3>Información de Estudios</h3>
     <ul>
-        <li>Nivel Educativo: <span th:text="${nivel_educativo}"></span></li>
-        <li>Institución: <span th:text="${institucion}"></span></li>
-        <li>Carrera: <span th:text="${carrera}"></span></li>
-        <li>Año Inicio: <span th:text="${anio_inicio}"></span></li>
-        <li>Año Fin: <span th:text="${anio_fin}"></span></li>
-        <li>Estado: <span th:text="${estado_estudio}"></span></li>
+        <li th:if="${nivel_educativo != null}">Nivel Educativo: <span th:text="${nivel_educativo}"></span></li>
+        <li th:if="${institucion != null}">Institución: <span th:text="${institucion}"></span></li>
+        <li th:if="${carrera != null}">Carrera: <span th:text="${carrera}"></span></li>
+        <li th:if="${anio_inicio != null}">Año Inicio: <span th:text="${anio_inicio}"></span></li>
+        <li th:if="${anio_fin != null}">Año Fin: <span th:text="${anio_fin}"></span></li>
+        <li th:if="${estado_estudio != null}">Estado: <span th:text="${estado_estudio}"></span></li>
+        <li th:each="est : ${estudios}">
+            <span th:text="${est.institucion}"></span> - <span th:text="${est.carrera}"></span> (<span th:text="${est.anio_inicio}"></span> a <span th:text="${est.anio_fin}"></span>)
+        </li>
     </ul>
+    <form th:action="@{/generar-curriculum}" method="post">
+        <input type="hidden" name="nombres" th:value="${nombres}" />
+        <input type="hidden" name="apellidos" th:value="${apellidos}" />
+        <input type="hidden" name="rut" th:value="${rut}" />
+        <input type="hidden" name="fecha_nacimiento" th:value="${fecha_nacimiento}" />
+        <input type="hidden" name="sexo" th:value="${sexo}" />
+        <input type="hidden" name="nacionalidad" th:value="${nacionalidad}" />
+        <input type="hidden" name="estado_civil" th:value="${estado_civil}" />
+        <input type="hidden" name="telefono" th:value="${telefono}" />
+        <input type="hidden" name="correo" th:value="${correo}" />
+        <input type="hidden" name="direccion" th:value="${direccion}" />
+        <input type="hidden" name="discapacidad" th:value="${discapacidad}" />
+        <!-- Campos simples -->
+        <input type="hidden" name="empresa" th:value="${empresa}" />
+        <input type="hidden" name="cargo" th:value="${cargo}" />
+        <input type="hidden" name="rubro" th:value="${rubro}" />
+        <input type="hidden" name="fecha_inicio" th:value="${fecha_inicio}" />
+        <input type="hidden" name="fecha_fin" th:value="${fecha_fin}" />
+        <input type="hidden" name="tipo_contrato" th:value="${tipo_contrato}" />
+        <input type="hidden" name="sueldo" th:value="${sueldo}" />
+        <input type="hidden" name="motivo" th:value="${motivo}" />
+        <input type="hidden" name="descripcion" th:value="${descripcion}" />
+        <input type="hidden" name="nivel_educativo" th:value="${nivel_educativo}" />
+        <input type="hidden" name="institucion" th:value="${institucion}" />
+        <input type="hidden" name="carrera" th:value="${carrera}" />
+        <input type="hidden" name="anio_inicio" th:value="${anio_inicio}" />
+        <input type="hidden" name="anio_fin" th:value="${anio_fin}" />
+        <input type="hidden" name="estado_estudio" th:value="${estado_estudio}" />
+        <!-- Campos dinámicos de experiencias laborales -->
+        <th:block th:each="exp, idx : ${experienciasLaborales}">
+            <input type="hidden" th:name="${'empresa_' + idx.index}" th:value="${exp.empresa}" />
+            <input type="hidden" th:name="${'cargo_' + idx.index}" th:value="${exp.cargo}" />
+            <input type="hidden" th:name="${'rubro_' + idx.index}" th:value="${exp.rubro}" />
+            <input type="hidden" th:name="${'fecha_inicio_' + idx.index}" th:value="${exp.fecha_inicio}" />
+            <input type="hidden" th:name="${'fecha_fin_' + idx.index}" th:value="${exp.fecha_fin}" />
+            <input type="hidden" th:name="${'tipo_contrato_' + idx.index}" th:value="${exp.tipo_contrato}" />
+            <input type="hidden" th:name="${'sueldo_' + idx.index}" th:value="${exp.sueldo}" />
+            <input type="hidden" th:name="${'motivo_' + idx.index}" th:value="${exp.motivo}" />
+            <input type="hidden" th:name="${'descripcion_' + idx.index}" th:value="${exp.descripcion}" />
+        </th:block>
+        <!-- Campos dinámicos de estudios -->
+        <th:block th:each="est, idx : ${estudios}">
+            <input type="hidden" th:name="${'nivel_educativo_' + idx.index}" th:value="${est.nivel_educativo}" />
+            <input type="hidden" th:name="${'institucion_' + idx.index}" th:value="${est.institucion}" />
+            <input type="hidden" th:name="${'carrera_' + idx.index}" th:value="${est.carrera}" />
+            <input type="hidden" th:name="${'anio_inicio_' + idx.index}" th:value="${est.anio_inicio}" />
+            <input type="hidden" th:name="${'anio_fin_' + idx.index}" th:value="${est.anio_fin}" />
+            <input type="hidden" th:name="${'estado_estudio_' + idx.index}" th:value="${est.estado_estudio}" />
+        </th:block>
+        <button type="submit">Generar Currículum</button>
+    </form>
     <a th:href="@{/formulario}">Volver</a>
 </body>
 </html>
