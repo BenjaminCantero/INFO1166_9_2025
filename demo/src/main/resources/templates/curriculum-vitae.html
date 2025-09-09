@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Currículum Vitae</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        
+        .cv-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .cv-title {
+            text-align: center;
+            color: #1e88e5;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            color: #1e88e5;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #1e88e5;
+        }
+        
+        .personal-info {
+            margin-left: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: baseline;
+        }
+        
+        .info-label {
+            color: #1e88e5;
+            font-weight: 600;
+            min-width: 120px;
+            margin-right: 20px;
+        }
+        
+        .info-value {
+            color: #333;
+            flex: 1;
+        }
+        
+        .experience-item, .education-item {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .item-title {
+            color: #1e88e5;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .item-details {
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .item-description {
+            color: #333;
+            margin-left: 15px;
+        }
+        
+        .no-data {
+            margin-left: 20px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .actions {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+            border-radius: 0 0 8px 8px;
+            margin-left: -60px;
+            margin-right: -60px;
+            margin-bottom: -60px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0 10px 10px 0;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 2px solid;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: #1e88e5;
+            color: white;
+            border-color: #1e88e5;
+        }
+        
+        .btn-primary:hover {
+            background: #1565c0;
+            border-color: #1565c0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #1e88e5;
+            border-color: #1e88e5;
+        }
+        
+        .btn-secondary:hover {
+            background: #1e88e5;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        
+        .btn-success:hover {
+            background: #388e3c;
+            border-color: #388e3c;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .cv-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 40px;
+            }
+            
+            .actions {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cv-container {
+                padding: 30px 20px;
+            }
+            
+            .cv-title {
+                font-size: 2rem;
+            }
+            
+            .info-row {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            
+            .info-label {
+                margin-bottom: 5px;
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container" id="cv-content">
+        <h1 class="cv-title">Currículum Vitae</h1>
+        
+        <!-- Datos Personales -->
+        <div class="section">
+            <h2 class="section-title">Datos Personales</h2>
+            <div class="personal-info">
+                <div class="info-row">
+                    <span class="info-label">Nombres:</span>
+                    <span class="info-value" th:text="${datos.nombres ?: '-'}">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Apellidos:</span>
+                    <span class="info-value" th:text="${datos.apellidos ?: '-'}">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">RUT:</span>
+                    <span class="info-value" th:text="${datos.rut ?: '-'}">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Teléfono:</span>
+                    <span class="info-value" th:text="${datos.telefono ?: '-'}">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Correo:</span>
+                    <span class="info-value" th:text="${datos.correo ?: '-'}">-</span>
+                </div>
+                <div class="info-row" th:if="${edad != null and edad > 0}">
+                    <span class="info-label">Edad:</span>
+                    <span class="info-value" th:text="${edad + ' años'}">-</span>
+                </div>
+                <div class="info-row" th:if="${datos.sexo}">
+                    <span class="info-label">Sexo:</span>
+                    <span class="info-value" th:text="${datos.sexo}">-</span>
+                </div>
+                <div class="info-row" th:if="${datos.nacionalidad}">
+                    <span class="info-label">Nacionalidad:</span>
+                    <span class="info-value" th:text="${datos.nacionalidad}">-</span>
+                </div>
+                <div class="info-row" th:if="${datos.estadoCivil}">
+                    <span class="info-label">Estado Civil:</span>
+                    <span class="info-value" th:text="${datos.estadoCivil}">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Domicilio:</span>
+                    <span class="info-value" th:text="${datos.direccion ?: '-'}">-</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Experiencia Laboral -->
+        <div class="section">
+            <h2 class="section-title">Experiencia Laboral</h2>
+            <div th:if="${datos.antecedentesLaborales != null and !datos.antecedentesLaborales.isEmpty()}">
+                <div th:each="exp : ${datos.antecedentesLaborales}" class="experience-item">
+                    <div class="item-title" th:text="${exp.cargo ?: 'Sin cargo especificado'}">Cargo</div>
+                    <div class="item-details">
+                        <span th:text="${exp.empresa?.nombreEmpresa ?: 'Empresa no especificada'}">Empresa</span>
+                        <span th:if="${exp.fechaInicio}">
+                            (<span th:text="${#dates.format(exp.fechaInicio, 'yyyy-MM-dd')}">Inicio</span>
+                            <span th:if="${exp.fechaFin}">
+                                a<span th:text="${#dates.format(exp.fechaFin, 'yyyy-MM-dd')}">Fin</span>)
+                            </span>
+                            <span th:unless="${exp.fechaFin}">a2025-09-19)</span>
+                        </span>
+                    </div>
+                    <div class="item-description" th:if="${exp.descripcion}" th:text="${exp.descripcion}">
+                        Descripción del trabajo
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${datos.antecedentesLaborales != null and !datos.antecedentesLaborales.isEmpty()}" 
+                 class="no-data">
+                Sin experiencia laboral registrada
+            </div>
+        </div>
+        
+        <!-- Estudios -->
+        <div class="section">
+            <h2 class="section-title">Estudios</h2>
+            <div th:if="${datos.informacionEstudios != null and !datos.informacionEstudios.isEmpty()}">
+                <div th:each="estudio : ${datos.informacionEstudios}" class="education-item">
+                    <div class="item-title" th:text="${estudio.carrera?.nombreCarrera ?: 'Carrera no especificada'}">Carrera</div>
+                    <div class="item-details">
+                        <span th:text="${estudio.institucion?.nombreInstitucion ?: 'Institución no especificada'}">Institución</span>
+                        <span th:if="${estudio.anioInicio}">
+                            (<span th:text="${estudio.anioInicio}">Año inicio</span>
+                            <span th:if="${estudio.anioFin}">
+                                a<span th:text="${estudio.anioFin}">Año fin</span>)
+                            </span>
+                            <span th:unless="${estudio.anioFin}">a2026)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${datos.informacionEstudios != null and !datos.informacionEstudios.isEmpty()}" 
+                 class="no-data">
+                Sin estudios registrados
+            </div>
+        </div>
+    </div>
+    
+    <div class="actions">
+        <button onclick="window.print()" class="btn btn-primary">
+            Descargar PDF
+        </button>
+        <button onclick="descargarHTML()" class="btn btn-success">
+            Descargar HTML
+        </button>
+        <a th:href="@{'/confirmacion?id=' + ${datosId}}" class="btn btn-secondary">
+            Volver
+        </a>
+        <a th:href="@{/formulario}" class="btn btn-secondary">
+            Nuevo Registro
+        </a>
+    </div>
+    
+    <script>
+        function descargarHTML() {
+            const cvContent = document.getElementById('cv-content').outerHTML;
+            const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Currículum Vitae</title>
+    <style>
+        ${document.querySelector('style').innerHTML}
+        .actions { display: none; }
+    </style>
+</head>
+<body>
+    ${cvContent}
+</body>
+</html>`;
+            
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'curriculum-vitae.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

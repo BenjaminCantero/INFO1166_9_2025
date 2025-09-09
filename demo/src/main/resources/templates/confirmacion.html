@@ -1,48 +1,142 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Confirmación</title>
+    <meta charset="UTF-8">
+    <title>Datos Enviados - BNE</title>
+    <link rel="stylesheet" th:href="@{/css/form-bne.css}">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; }
-        .container { background: #fff; max-width: 500px; margin: 40px auto; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        h2 { color: #1976d2; text-align: center; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 8px; }
-        .volver { display: block; text-align: center; margin-top: 20px; color: #1976d2; text-decoration: none; }
+        .confirmacion-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .mensaje-exito {
+            background: #d4edda;
+            color: #155724;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .datos-id {
+            background: #e2e3e5;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            font-family: monospace;
+        }
+        
+        .botones-accion {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        
+        .icono-exito {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+        
+        .mensaje-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 th:text="${mensaje}"></h2>
-        <ul>
-            <li><strong>Nombres:</strong> <span th:text="${datos.nombres}"></span></li>
-            <li><strong>Apellidos:</strong> <span th:text="${datos.apellidos}"></span></li>
-            <li><strong>RUT:</strong> <span th:text="${datos.rut}"></span></li>
-            <li><strong>Fecha de nacimiento:</strong> <span th:text="${datos.fecha_nacimiento}"></span></li>
-            <li><strong>Sexo:</strong> <span th:text="${datos.sexo}"></span></li>
-            <li><strong>Nacionalidad:</strong> <span th:text="${datos.nacionalidad}"></span></li>
-            <li><strong>Estado civil:</strong> <span th:text="${datos.estado_civil}"></span></li>
-            <li><strong>Teléfono:</strong> <span th:text="${datos.telefono}"></span></li>
-            <li><strong>Correo:</strong> <span th:text="${datos.correo}"></span></li>
-            <li><strong>Dirección:</strong> <span th:text="${datos.direccion}"></span></li>
-            <li><strong>Discapacidad:</strong> <span th:text="${datos.discapacidad}"></span></li>
-            <li><strong>Empresa donde trabajó:</strong> <span th:text="${datos.empresa}"></span></li>
-            <li><strong>Cargo desempeñado:</strong> <span th:text="${datos.cargo}"></span></li>
-            <li><strong>Rubro o industria:</strong> <span th:text="${datos.rubro}"></span></li>
-            <li><strong>Fecha de inicio:</strong> <span th:text="${datos.fecha_inicio}"></span></li>
-            <li><strong>Fecha de término:</strong> <span th:text="${datos.fecha_fin}"></span></li>
-            <li><strong>Tipo de contrato:</strong> <span th:text="${datos.tipo_contrato}"></span></li>
-            <li><strong>Sueldo aproximado:</strong> <span th:text="${datos.sueldo}"></span></li>
-            <li><strong>Motivo de término:</strong> <span th:text="${datos.motivo}"></span></li>
-            <li><strong>Descripción del trabajo realizado:</strong> <span th:text="${datos.descripcion}"></span></li>
-            <li><strong>Nivel educativo:</strong> <span th:text="${datos.nivel_educativo}"></span></li>
-            <li><strong>Nombre de la institución:</strong> <span th:text="${datos.institucion}"></span></li>
-            <li><strong>Título o carrera:</strong> <span th:text="${datos.carrera}"></span></li>
-            <li><strong>Año de inicio:</strong> <span th:text="${datos.anio_inicio}"></span></li>
-            <li><strong>Año de término:</strong> <span th:text="${datos.anio_fin}"></span></li>
-            <li><strong>Estado de estudio:</strong> <span th:text="${datos.estado_estudio}"></span></li>
-        </ul>
-        <a class="volver" th:href="@{/formulario}">Volver al formulario</a>
+    <div class="confirmacion-container">
+        <div class="icono-exito">✅</div>
+        
+        <div class="mensaje-exito" th:if="${mensaje}">
+            <span th:text="${mensaje}">¡Datos enviados correctamente al usuario!</span>
+        </div>
+        
+        <div class="mensaje-info">
+            <h3>¡Proceso completado exitosamente!</h3>
+            <p>Tus datos personales han sido registrados y procesados correctamente en nuestro sistema.</p>
+        </div>
+        
+        <div class="datos-id" th:if="${datosId}">
+            <strong>ID de Registro: </strong><span th:text="${datosId}"></span>
+        </div>
+        
+        <div class="botones-accion">
+            <!-- Formulario para crear CV -->
+            <form th:if="${mostrarBotonCV}" th:action="@{/crear-cv}" method="post" style="display: inline;">
+                <input type="hidden" name="datosId" th:value="${datosId}">
+                <button type="submit" class="btn btn-success">
+                    📄 Generar mi Currículum
+                </button>
+            </form>
+            
+            <!-- Botón para volver al formulario -->
+            <a th:href="@{/formulario}" class="btn btn-secondary">
+                📝 Nuevo Registro
+            </a>
+            
+            <!-- Botón para ir al inicio -->
+            <a th:href="@{/}" class="btn btn-secondary">
+                🏠 Ir al Inicio
+            </a>
+        </div>
+        
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #dee2e6;">
+            <p style="color: #6c757d; font-size: 0.9rem;">
+                💡 <strong>Próximos pasos:</strong> Puedes generar tu currículum profesional 
+                usando los datos que acabas de registrar, o revisar la información antes de continuar.
+            </p>
+        </div>
     </div>
 </body>
 </html>

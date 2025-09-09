@@ -1,141 +1,80 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.DatosPersonalesDTO;
+import com.example.demo.dto.DatosPersonalesDTO2;
+import com.example.demo.entity.DatosPersonales;
 import com.example.demo.service.DatosPersonalesService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/datos-personales")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class DatosPersonalesController {
-    
-    private final DatosPersonalesService datosPersonalesService;
-    
-    // GET /api/datos-personales - Obtener todos
-    @GetMapping
-    public ResponseEntity<List<DatosPersonalesDTO>> getAllDatosPersonales() {
-        List<DatosPersonalesDTO> personas = datosPersonalesService.findAll();
-        return ResponseEntity.ok(personas);
-    }
-    
-    // GET /api/datos-personales/{id} - Obtener por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<DatosPersonalesDTO> getDatosPersonalesById(@PathVariable Long id) {
-        return datosPersonalesService.findById(id)
-                .map(persona -> ResponseEntity.ok(persona))
-                .orElse(ResponseEntity.notFound().build());
-    }
-    
-    // GET /api/datos-personales/rut/{rut} - Obtener por RUT
-    @GetMapping("/rut/{rut}")
-    public ResponseEntity<DatosPersonalesDTO> getDatosPersonalesByRut(@PathVariable String rut) {
-        return datosPersonalesService.findByRut(rut)
-                .map(persona -> ResponseEntity.ok(persona))
-                .orElse(ResponseEntity.notFound().build());
-    }
-    
-    // GET /api/datos-personales/buscar?nombre={nombre} - Buscar por nombre
-    @GetMapping("/buscar")
-    public ResponseEntity<List<DatosPersonalesDTO>> buscarPorNombre(@RequestParam String nombre) {
-        List<DatosPersonalesDTO> personas = datosPersonalesService.findByNombre(nombre);
-        return ResponseEntity.ok(personas);
-    }
-    
-    // POST /api/datos-personales - Crear nuevo (solo datos básicos)
-    @PostMapping
-    public ResponseEntity<?> createDatosPersonales(@Valid @RequestBody DatosPersonalesDTO datosPersonalesDTO) {
+
+    @Autowired
+    private DatosPersonalesService datosPersonalesService;
+
+    @PostMapping("/guardar")
+    public ResponseEntity<Map<String, Object>> guardarDatosPersonales(
+            @RequestBody DatosPersonalesDTO2 datosPersonales) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
         try {
-            // Validar RUT único
-            if (datosPersonalesService.existsByRut(datosPersonalesDTO.getRut())) {
-                return ResponseEntity.badRequest()
-                        .body("Error: Ya existe una persona con el RUT " + datosPersonalesDTO.getRut());
+            // Validaciones básicas
+            if (datosPersonales.getNombres() == null || datosPersonales.getNombres().trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "El nombre es obligatorio");
+                return ResponseEntity.badRequest().body(response);
             }
             
-            // Validar correo único
-            if (datosPersonalesService.existsByCorreo(datosPersonalesDTO.getCorreo())) {
-                return ResponseEntity.badRequest()
-                        .body("Error: Ya existe una persona con el correo " + datosPersonalesDTO.getCorreo());
+            if (datosPersonales.getRut() == null || datosPersonales.getRut().trim().isEmpty()) {
+                response.put("success", false);
+                response.put("message", "El RUT es obligatorio");
+                return ResponseEntity.badRequest().body(response);
             }
             
-            DatosPersonalesDTO nuevaPersona = datosPersonalesService.create(datosPersonalesDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaPersona);
+            // Guardar en la base de datos usando el service
+            DatosPersonales savedDatos = datosPersonalesService.guardarDatosPersonales(datosPersonales);
+            
+            response.put("success", true);
+            response.put("message", "Datos guardados correctamente en la base de datos");
+            response.put("id", savedDatos.getIdDatosPersonales());
+            
+            return ResponseEntity.ok(response);
             
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear los datos personales: " + e.getMessage());
+            System.err.println("Error al guardar datos: " + e.getMessage());
+            e.printStackTrace();
+            
+            String mensaje = "Error al guardar en base de datos";
+            
+            // Detectar errores específicos
+            if (e.getMessage().contains("constraint") || e.getMessage().contains("Constraint")) {
+                if (e.getMessage().contains("rut") || e.getMessage().contains("RUT")) {
+                    mensaje = "El RUT ya está registrado en el sistema";
+                } else if (e.getMessage().contains("correo") || e.getMessage().contains("CORREO")) {
+                    mensaje = "El correo electrónico ya está registrado en el sistema";
+                } else {
+                    mensaje = "Ya existe un registro con estos datos. Verifica el RUT y correo electrónico";
+                }
+            }
+            
+            response.put("success", false);
+            response.put("message", mensaje);
+            return ResponseEntity.badRequest().body(response);
         }
     }
     
-    // POST /api/datos-personales/completo - Crear nuevo con toda la información
-    @PostMapping("/completo")
-    public ResponseEntity<?> createDatosPersonalesCompleto(@Valid @RequestBody DatosPersonalesDTO datosPersonalesDTO) {
-        try {
-            // Validar RUT único
-            if (datosPersonalesService.existsByRut(datosPersonalesDTO.getRut())) {
-                return ResponseEntity.badRequest()
-                        .body("Error: Ya existe una persona con el RUT " + datosPersonalesDTO.getRut());
-            }
-            
-            // Validar correo único
-            if (datosPersonalesService.existsByCorreo(datosPersonalesDTO.getCorreo())) {
-                return ResponseEntity.badRequest()
-                        .body("Error: Ya existe una persona con el correo " + datosPersonalesDTO.getCorreo());
-            }
-            
-            // Crear con toda la información relacionada
-            DatosPersonalesDTO nuevaPersona = datosPersonalesService.createComplete(datosPersonalesDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaPersona);
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear los datos personales completos: " + e.getMessage());
-        }
-    }
-    
-    // PUT /api/datos-personales/{id} - Actualizar
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateDatosPersonales(
-            @PathVariable Long id, 
-            @Valid @RequestBody DatosPersonalesDTO datosPersonalesDTO) {
-        try {
-            return datosPersonalesService.update(id, datosPersonalesDTO)
-                    .map(persona -> ResponseEntity.ok(persona))
-                    .orElse(ResponseEntity.notFound().build());
-                    
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al actualizar los datos personales: " + e.getMessage());
-        }
-    }
-    
-    // DELETE /api/datos-personales/{id} - Eliminar
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDatosPersonales(@PathVariable Long id) {
-        try {
-            boolean deleted = datosPersonalesService.delete(id);
-            if (deleted) {
-                return ResponseEntity.ok().body("Datos personales eliminados correctamente");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al eliminar los datos personales: " + e.getMessage());
-        }
-    }
-    
-    // GET /api/datos-personales/{id}/exists - Verificar existencia
-    @GetMapping("/{id}/exists")
-    public ResponseEntity<Boolean> existsById(@PathVariable Long id) {
-        boolean exists = datosPersonalesService.findById(id).isPresent();
-        return ResponseEntity.ok(exists);
+    @GetMapping("/test")
+    public ResponseEntity<Map<String, String>> test() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Backend conectado correctamente");
+        response.put("timestamp", java.time.LocalDateTime.now().toString());
+        return ResponseEntity.ok(response);
     }
 }

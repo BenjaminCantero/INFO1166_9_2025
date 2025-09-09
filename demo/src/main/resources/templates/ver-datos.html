@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Datos Registrados - BNE</title>
+    <link rel="stylesheet" th:href="@{/css/form-bne.css}">
+    <style>
+        .datos-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .datos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .datos-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .datos-card h3 {
+            color: #007bff;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+        }
+        
+        .dato-item {
+            display: flex;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .dato-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 120px;
+            margin-right: 1rem;
+        }
+        
+        .dato-value {
+            color: #6c757d;
+            flex: 1;
+        }
+        
+        .botones-accion {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .header-datos {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .id-registro {
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-family: monospace;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="datos-container">
+        <div class="header-datos">
+            <h2>📋 Mis Datos Registrados</h2>
+            <div class="id-registro" th:if="${datosId}">
+                ID: <span th:text="${datosId}"></span>
+            </div>
+        </div>
+        
+        <div class="datos-grid" th:if="${datos}">
+            <!-- Datos Personales Básicos -->
+            <div class="datos-card">
+                <h3>👤 Información Personal</h3>
+                <div class="dato-item">
+                    <span class="dato-label">Nombres:</span>
+                    <span class="dato-value" th:text="${datos.nombres}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Apellidos:</span>
+                    <span class="dato-value" th:text="${datos.apellidos}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">RUT:</span>
+                    <span class="dato-value" th:text="${datos.rut}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Sexo:</span>
+                    <span class="dato-value" th:text="${datos.sexo}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Fecha Nac.:</span>
+                    <span class="dato-value" th:text="${#dates.format(datos.fechaNacimiento, 'dd/MM/yyyy')}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Nacionalidad:</span>
+                    <span class="dato-value" th:text="${datos.nacionalidad}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Estado Civil:</span>
+                    <span class="dato-value" th:text="${datos.estadoCivil}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Discapacidad:</span>
+                    <span class="dato-value" th:text="${datos.discapacidad ? 'Sí' : 'No'}"></span>
+                </div>
+            </div>
+            
+            <!-- Datos de Contacto -->
+            <div class="datos-card">
+                <h3>📞 Información de Contacto</h3>
+                <div class="dato-item">
+                    <span class="dato-label">Teléfono:</span>
+                    <span class="dato-value" th:text="${datos.telefono}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Correo:</span>
+                    <span class="dato-value" th:text="${datos.correo}"></span>
+                </div>
+                <div class="dato-item">
+                    <span class="dato-label">Dirección:</span>
+                    <span class="dato-value" th:text="${datos.direccion}"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${error}" style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
+            <strong>Error:</strong> <span th:text="${error}"></span>
+        </div>
+        
+        <div class="botones-accion">
+            <!-- Formulario para crear CV -->
+            <form th:action="@{/crear-cv}" method="post" style="display: inline;" th:if="${datos}">
+                <input type="hidden" name="datosId" th:value="${datosId}">
+                <button type="submit" class="btn btn-success">
+                    📄 Generar mi Currículum
+                </button>
+            </form>
+            
+            <!-- Botón para volver a confirmación -->
+            <a th:href="@{'/confirmacion?id=' + ${datosId}}" class="btn btn-secondary" th:if="${datosId}">
+                ⬅️ Volver
+            </a>
+            
+            <!-- Botón para nuevo registro -->
+            <a th:href="@{/formulario}" class="btn btn-secondary">
+                📝 Nuevo Registro
+            </a>
+            
+            <!-- Botón para ir al inicio -->
+            <a th:href="@{/}" class="btn btn-secondary">
+                🏠 Ir al Inicio
+            </a>
+        </div>
+    </div>
+</body>
+</html>

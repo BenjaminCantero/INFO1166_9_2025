@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,15 +6,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 
 import com.example.demo.dto.DatosPersonalesDTO;
+import com.example.demo.entity.DatosPersonales;
+import com.example.demo.repository.DatosPersonalesRepository;
 import com.example.demo.service.DatosPersonalesService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,11 +28,91 @@ import lombok.RequiredArgsConstructor;
 public class FormController {
     
     private final DatosPersonalesService datosPersonalesService;
+    private final DatosPersonalesRepository datosPersonalesRepository;
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     @GetMapping("/")
     public String redirigirPrincipal() {
         return "redirect:/formulario";
+    }
+
+    @GetMapping("/confirmacion")
+    public String mostrarConfirmacion(@RequestParam("id") Long id, Model model) {
+        try {
+            // Buscar los datos por ID usando el repository directamente o crear un método en el service
+            // Por ahora simulamos que encontramos los datos
+            model.addAttribute("mensaje", "¡Datos enviados correctamente al usuario!");
+            model.addAttribute("datosId", id);
+            model.addAttribute("mostrarBotonCV", true);
+            
+            return "confirmacion";
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al cargar los datos: " + e.getMessage());
+            return "error";
+        }
+    }
+
+    @PostMapping("/crear-cv")
+    public String crearCV(@RequestParam("datosId") Long datosId, Model model) {
+        try {
+            System.out.println("🔍 Generando CV para ID: " + datosId);
+            
+            // Buscar los datos completos del usuario
+            Optional<DatosPersonales> datosOpt = datosPersonalesRepository.findById(datosId);
+            
+            if (datosOpt.isPresent()) {
+                DatosPersonales datos = datosOpt.get();
+                System.out.println("✅ Datos encontrados: " + datos.getNombres() + " " + datos.getApellidos());
+                
+                // Agregar datos al modelo para el CV
+                model.addAttribute("datos", datos);
+                model.addAttribute("datosId", datosId);
+                
+                // Calcular edad si hay fecha de nacimiento
+                if (datos.getFechaNacimiento() != null) {
+                    int edad = calcularEdad(datos.getFechaNacimiento());
+                    model.addAttribute("edad", edad);
+                    System.out.println("📅 Edad calculada: " + edad + " años");
+                } else {
+                    System.out.println("⚠️ Sin fecha de nacimiento");
+                }
+                
+                System.out.println("📄 Renderizando template curriculum-vitae");
+                return "curriculum-vitae";
+            } else {
+                System.err.println("❌ No se encontraron datos con ID: " + datosId);
+                model.addAttribute("error", "No se encontraron datos con el ID: " + datosId);
+                return "error";
+            }
+            
+        } catch (Exception e) {
+            System.err.println("💥 Error al generar CV: " + e.getMessage());
+            e.printStackTrace();
+            model.addAttribute("error", "Error al generar CV: " + e.getMessage());
+            return "error";
+        }
+    }
+    
+    @GetMapping("/descargar-cv/{id}")
+    public String descargarCV(@PathVariable Long id, Model model) {
+        return crearCV(id, model);
+    }
+    
+    private int calcularEdad(Date fechaNacimiento) {
+        if (fechaNacimiento == null) {
+            return 0;
+        }
+        
+        try {
+            // Convertir java.util.Date o java.sql.Date a LocalDate de forma segura
+            java.time.LocalDate nacimiento = new java.sql.Date(fechaNacimiento.getTime())
+                .toLocalDate();
+            java.time.LocalDate ahora = java.time.LocalDate.now();
+            return java.time.Period.between(nacimiento, ahora).getYears();
+        } catch (Exception e) {
+            System.err.println("Error calculando edad: " + e.getMessage());
+            return 0;
+        }
     }
 
     @GetMapping("/formulario")

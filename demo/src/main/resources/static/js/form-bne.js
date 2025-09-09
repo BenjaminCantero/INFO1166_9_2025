@@ -1,3 +1,6 @@
+// Configuración del backend
+const BACKEND_URL = 'http://localhost:8080/api';
+
 // JS para agregar múltiples estudios dinámicamente en el formulario
 function agregarEstudio() {
     const container = document.getElementById('estudios-container');
@@ -31,11 +34,6 @@ function agregarEstudio() {
     container.insertAdjacentHTML('beforeend', template);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const btnEstudio = document.getElementById('btn-agregar-estudio');
-    if (btnEstudio) btnEstudio.onclick = agregarEstudio;
-});
-// ...existing code...
 // JS para agregar múltiples experiencias laborales dinámicamente en el formulario
 function agregarExperienciaLaboral() {
     const container = document.getElementById('experiencias-laborales');
@@ -56,8 +54,156 @@ function agregarExperienciaLaboral() {
     container.insertAdjacentHTML('beforeend', template);
 }
 
+// Función para recopilar los datos del formulario
+function recopilarDatosFormulario() {
+    // Datos personales básicos
+    const datosPersonales = {
+        nombres: document.querySelector('[name="nombres"]')?.value || '',
+        apellidos: document.querySelector('[name="apellidos"]')?.value || '',
+        rut: document.querySelector('[name="rut"]')?.value || '',
+        fechaNacimiento: document.querySelector('[name="fecha_nacimiento"]')?.value || '',
+        sexo: document.querySelector('[name="sexo"]')?.value || '',
+        nacionalidad: document.querySelector('[name="nacionalidad"]')?.value || '',
+        estadoCivil: document.querySelector('[name="estado_civil"]')?.value || '',
+        telefono: document.querySelector('[name="telefono"]')?.value || '',
+        correo: document.querySelector('[name="correo"]')?.value || '',
+        direccion: document.querySelector('[name="direccion"]')?.value || '',
+        discapacidad: document.querySelector('[name="discapacidad"]')?.value === 'Si' ? 'Si' : 'No'
+    };
+
+    // Recopilar estudios
+    const estudios = [];
+    const estudiosItems = document.querySelectorAll('.estudio-item');
+    estudiosItems.forEach((item, index) => {
+        const estudio = {
+            nivelEducativo: item.querySelector(`[name*="nivel_educativo"]`)?.value || '',
+            institucion: item.querySelector(`[name*="institucion"]`)?.value || '',
+            carrera: item.querySelector(`[name*="carrera"]`)?.value || '',
+            anioInicio: item.querySelector(`[name*="anio_inicio"]`)?.value || '',
+            anioFin: item.querySelector(`[name*="anio_fin"]`)?.value || '',
+            estadoEstudio: item.querySelector(`[name*="estado_estudio"]`)?.value || ''
+        };
+        if (estudio.nivelEducativo || estudio.institucion) {
+            estudios.push(estudio);
+        }
+    });
+
+    // Recopilar experiencias laborales
+    const experiencias = [];
+    const experienciasItems = document.querySelectorAll('.experiencia-laboral');
+    experienciasItems.forEach((item, index) => {
+        const experiencia = {
+            empresa: item.querySelector(`[name*="empresa"]`)?.value || '',
+            cargo: item.querySelector(`[name*="cargo"]`)?.value || '',
+            rubro: item.querySelector(`[name*="rubro"]`)?.value || '',
+            fechaInicio: item.querySelector(`[name*="fecha_inicio"]`)?.value || '',
+            fechaFin: item.querySelector(`[name*="fecha_fin"]`)?.value || '',
+            tipoContrato: item.querySelector(`[name*="tipo_contrato"]`)?.value || '',
+            sueldo: item.querySelector(`[name*="sueldo"]`)?.value || '',
+            motivo: item.querySelector(`[name*="motivo"]`)?.value || '',
+            descripcion: item.querySelector(`[name*="descripcion"]`)?.value || ''
+        };
+        if (experiencia.empresa || experiencia.cargo) {
+            experiencias.push(experiencia);
+        }
+    });
+
+    return {
+        ...datosPersonales,
+        informacionEstudios: estudios,
+        antecedentesLaborales: experiencias
+    };
+}
+
+// Función para enviar datos al backend
+async function enviarDatosAlBackend(datos) {
+    try {
+        console.log('Enviando datos:', datos);
+        
+        const response = await fetch(`${BACKEND_URL}/datos-personales/guardar`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datos)
+        });
+
+        const resultado = await response.json();
+        
+        if (response.ok && resultado.success) {
+            alert('✅ Datos enviados correctamente al usuario!');
+            console.log('Respuesta del servidor:', resultado);
+            
+            // Redirigir a la página de confirmación con el ID
+            window.location.href = `/confirmacion?id=${resultado.id}`;
+        } else {
+            alert('❌ Error al guardar: ' + (resultado.message || 'Error desconocido'));
+            console.error('Error del servidor:', resultado);
+        }
+        
+    } catch (error) {
+        console.error('Error de conexión:', error);
+        alert('❌ Error de conexión con el servidor. Verifica que el backend esté ejecutándose en ' + BACKEND_URL);
+    }
+}
+
+// Función para probar la conexión con el backend
+async function probarConexion() {
+    try {
+        const response = await fetch(`${BACKEND_URL}/datos-personales/test`);
+        const resultado = await response.json();
+        
+        if (response.ok) {
+            console.log('✅ Backend conectado:', resultado);
+            return true;
+        } else {
+            console.error('❌ Backend no responde correctamente');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Error conectando con backend:', error);
+        return false;
+    }
+}
+
+// Event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    const btnAdd = document.getElementById('btn-agregar-experiencia');
-    if (btnAdd) btnAdd.onclick = agregarExperienciaLaboral;
+    // Botones existentes
+    const btnEstudio = document.getElementById('btn-agregar-estudio');
+    if (btnEstudio) btnEstudio.onclick = agregarEstudio;
+    
+    const btnExperiencia = document.getElementById('btn-agregar-experiencia');
+    if (btnExperiencia) btnExperiencia.onclick = agregarExperienciaLaboral;
+    
+    // Manejar envío del formulario - funciona con cualquier form
+    const formulario = document.querySelector('form');
+    if (formulario) {
+        formulario.addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevenir envío tradicional
+            
+            // Validar email si existe
+            const correo = document.querySelector('[name="correo"]')?.value;
+            if (correo && !validarEmail(correo)) {
+                alert('Por favor ingresa un correo electrónico válido');
+                return;
+            }
+            
+            // Recopilar y enviar datos
+            const datos = recopilarDatosFormulario();
+            await enviarDatosAlBackend(datos);
+        });
+        
+        console.log('📝 Formulario encontrado y listener agregado');
+    } else {
+        console.error('❌ No se encontró el formulario');
+    }
+    
+    // Probar conexión al cargar la página
+    probarConexion().then(conectado => {
+        if (conectado) {
+            console.log('🟢 Sistema conectado correctamente');
+        } else {
+            console.warn('🟡 Verificar que el backend esté ejecutándose en http://localhost:8080');
+        }
+    });
 });
-// ...existing code...

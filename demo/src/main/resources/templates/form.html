@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario BNE Mejorado</title> 
+    <title>Formulario BNE Mejorado</title>
     <link rel="stylesheet" th:href="@{/css/form-bne.css}">
-
 </head>
 <body>
-    <form th:action="@{/enviar}" method="post" class="main-container">
-
-     <nav class="nav-sections">
+    <!-- CAMBIO IMPORTANTE: Agregar id="formulario-principal" y quitar th:action para usar JavaScript -->
+    <form id="formulario-principal" class="main-container">
+      
+        <nav class="nav-sections">
             <a href="#datos-personales">👤 Datos Personales</a>
             <a href="#antecedentes-laborales">💼 Antecedentes Laborales</a>
             <a href="#informacion-estudios">🎓 Información de Estudios</a>
@@ -21,11 +21,13 @@
 
         <div class="btn-container">
             <button type="button" class="btn btn-secondary" onclick="history.back()">Volver</button>
+            <!-- CAMBIO IMPORTANTE: Este botón ahora es type="submit" para activar el JavaScript -->
             <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
         </div>
     </form>
 
-
+    <!-- Cargar primero emailValidator.js y luego form-bne.js -->
+    <script th:src="@{/js/emailValidator.js}"></script>
     <script th:src="@{/js/form-bne.js}"></script>
 </body>
 </html>

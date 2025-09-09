@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error - BNE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            padding: 2rem;
+        }
+        .error-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 5px solid #dc3545;
+        }
+        .error-title {
+            color: #dc3545;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-title">⚠️ Error del Sistema</h1>
+        
+        <div class="error-message" th:if="${error}">
+            <strong>Detalle del error:</strong><br>
+            <span th:text="${error}">Error desconocido</span>
+        </div>
+        
+        <div class="error-message" th:unless="${error}">
+            <strong>Ha ocurrido un error inesperado.</strong><br>
+            Por favor, inténtalo de nuevo más tarde.
+        </div>
+        
+        <a href="/formulario" class="btn">📝 Volver al Formulario</a>
+        <a href="/" class="btn">🏠 Ir al Inicio</a>
+    </div>
+</body>
+</html>
