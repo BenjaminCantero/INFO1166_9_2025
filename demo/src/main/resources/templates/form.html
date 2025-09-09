@@ -15,9 +15,9 @@
             <a href="#informacion-estudios">🎓 Información de Estudios</a>
         </nav>
 
-        <div th:replace="fragments/datos-personales :: datos-personales"></div>
-        <div th:replace="fragments/antecedentes-laborales :: antecedentes-laborales"></div>
-        <div th:replace="fragments/informacion-estudios :: informacion-estudios"></div>
+        <div th:replace="~{fragments/datos-personales :: datos-personales}"></div>
+        <div th:replace="~{fragments/antecedentes-laborales :: antecedentes-laborales}"></div>
+        <div th:replace="~{fragments/informacion-estudios :: informacion-estudios}"></div>
 
         <div class="btn-container">
             <button type="button" class="btn btn-secondary" onclick="history.back()">Volver</button>
